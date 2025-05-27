@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 목록</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    header {
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background-color: #555;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 30px 10px;
+    }
+    .product {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      width: 200px;
+      text-align: center;
+      margin: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .product img {
+      width: 100%;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>상품 목록</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">홈</a>
+    <a href="products.html">상품</a>
+    <a href="#">베스트</a>
+    <a href="#">장바구니</a>
+  </nav>
+
+  <section class="products">
+    <div class="product">
+      <img src="bottom1.png" alt="상품1">
+      <h3>상품 1</h3>
+      <p>₩29,000</p>
+    </div>
+    <div class="product">
+      <img src="bottom2.png" alt="상품2">
+      <h3>상품 2</h3>
+      <p>₩35,000</p>
+    </div>
+    <div class="product">
+      <img src="bottom3.png" alt="상품3">
+      <h3>상품 3</h3>
+      <p>₩22,000</p>
+    </div>
+  </section>
+
+</body>
+</html>
