@@ -3,30 +3,37 @@ body {
     margin: 0;
     background-color: #f9f9f9;
 }
+
 header {
     background-color: #333;
     color: white;
     padding: 20px;
     text-align: center;
 }
+
 nav {
     background-color: #555;
     padding: 10px;
     text-align: center;
 }
+
 nav a {
     color: white;
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
 }
+
 .products {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 30px 10px;
 }
-.product {
+
+/* 변경된 부분: 상품을 링크로 처리했기 때문에 a.product에 스타일 적용 */
+.products a.product {
+    display: block;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -35,7 +42,16 @@ nav a {
     text-align: center;
     margin: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    color: inherit; /* 텍스트 색상 상속 (기본 검정) */
+    transition: transform 0.2s, box-shadow 0.2s;
 }
+
+.products a.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .product img {
     width: 100%;
     border-radius: 5px;

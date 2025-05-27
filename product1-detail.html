@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>논페이드 와이드 데님 슬랙스</title>
+  <link rel="stylesheet" href="product1-detail.css">
+
+</head>
+<body>
+
+  <header>
+    <h1>MYSHOP</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">홈</a>
+    <a href="products.html">상품</a>
+    <a href="#">베스트</a>
+    <a href="#">장바구니</a>
+  </nav>
+
+  <div class="container">
+    <img class="product-img" src="bottom1.png" alt="논페이드 와이드 데님 슬랙스">
+    <div class="product-info">
+      <h2>논페이드 와이드 데님 슬랙스</h2>
+      <p><strong>₩29,000</strong></p>
+      <p>캐쥬얼하게 드레스업 하기에 좋은 특별한 아이템</p>
+      <label for="quantity">수량:</label>
+      <input type="number" id="quantity" value="1" min="1" max="99">
+      <br>
+      <button onclick="addToCart()">장바구니 담기</button>
+    </div>
+  </div>
+
+  <div class="comments">
+    <h3>댓글</h3>
+    <div id="disqus_thread"></div>
+    <script>
+      /*
+      var disqus_config = function () {
+        this.page.url = window.location.href;  // 현재 페이지 주소
+        this.page.identifier = 'product-bottom1'; // 상품별 고유 ID 설정
+      };
+      */
+      (function () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://web1-2.disqus.com/embed.js'; // 여기서 'web1-2'는 본인의 사이트 shortname으로 바꿔야 함
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>
+      자바스크립트를 활성화해야 <a href="https://disqus.com/?ref_noscript">Disqus 댓글</a>을 볼 수 있습니다.
+    </noscript>
+  </div>
+
+  <script>
+    function addToCart() {
+      const quantity = document.getElementById("quantity").value;
+      alert(`${quantity}개를 장바구니에 담았습니다.`);
+    }
+  </script>
+
+</body>
+</html>
