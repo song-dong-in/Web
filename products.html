@@ -1,47 +1,94 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>상품 목록</title>
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MYCLOSET - BOTTOM</title>
   <link rel="stylesheet" href="products.css">
-
 </head>
 <body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-right">
+      <a href="#">회원가입</a>
+      <span>|</span>
+      <a href="#">로그인</a>
+      <span>|</span>
+      <a href="#">장바구니</a>
+    </div>
+  </div>
 
+  <!-- Header -->
   <header>
-    <h1>상품 목록</h1>
+  <a href="index.html" class="logo-link">
+    <div class="logo">MYCLOSET</div>
+  </a>
+    <nav>
+      <ul>
+        <li><a href="index.html">NEW</a></li>
+        <li><a href="index.html">BEST</a></li>
+        <li><a href="index.html">TOP</a></li>
+        <li><a href="products.html" class="active">BOTTOM</a></li>
+        <li><a href="index.html">OUTER</a></li>
+        <li><a href="index.html">ACCESSORY</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <nav>
-    <a href="index.html">홈</a>
-    <a href="products.html">상품</a>
-    <a href="#">베스트</a>
-    <a href="#">장바구니</a>
-  </nav>
+  <!-- Bottom 상품 리스트 -->
+  <section class="product-list">
+    <h2>BOTTOM</h2>
+    <p class="section-desc">스타일리시한 하의 아이템으로 나만의 코디 완성!</p>
+    <div class="products">
+      <div class="product-item">
+        <a href="product1-detail.html">
+        <img src="https://image.msscdn.net/thumbnails/images/goods_img/20230308/3130774/3130774_17134077408847_big.jpg?w=1200" alt="쿨링 와이드 이지 팬츠 [그레이]">
+        <h3>쿨링 와이드 이지 팬츠</h3>
+        <!-- <p class="desc">캐주얼한 데일리 청바지로 어떤 룩에도 잘 어울려요!</p> -->
+        <p class="price"><strong>₩29,000</strong></p>
+        </a>
+        <button class="btn">장바구니 담기</button>
+      </div>
+      <div class="product-item">
+        <a href="product2-detail.html">
+        <img src="https://image.msscdn.net/thumbnails/images/goods_img/20250325/4943752/4943752_17446184514318_big.jpg?w=1200" alt="미니 스커트">
+        <h3>와이드 버뮤다 팬츠</h3>
+        <!-- <p class="desc">여름용 가벼운 미니 스커트로 시원한 스타일링!</p> -->
+        <p class="price"><strong>₩24,000</strong></p>
+        </a>
+        <button class="btn">장바구니 담기</button>
+      </div>
+      <div class="product-item">
+        <a href="product3-detail.html">
+        <img src="https://image.msscdn.net/thumbnails/images/goods_img/20240718/4259233/4259233_17429522532085_big.jpg?w=1200" alt="슬랙스">
+        <h3>트레이닝반바지</h3>
+        <!-- <p class="desc">포멀한 스타일로 오피스룩에도 딱!</p> -->
+        <p class="price"><strong>₩39,000</strong></p>
+        </a>
+        <button class="btn">장바구니 담기</button>
+      </div>
+    </div>
+  </section>
 
- <section class="products">
-  <a href="product1-detail.html" class="product">
-    <img src="bottom1.png" alt="상품1">
-    <h3>논페이드 와이드 데님 슬랙스</h3>
-    <p>캐쥬얼하게 드레스업 하기에 좋은 특별한 아이템</p>
-    <p>₩29,000</p>
-  </a>
-  
-  <a href="product2-detail.html" class="product">
-    <img src="bottom2.png" alt="상품2">
-    <h3>302 쿨 린넨 와이드 데님</h3>
-    <p>편하고 시원한 린넨 데님! 여름 필수템입니다</p>
-    <p>₩35,000</p>
-  </a>
-  
-  <a href="product3-detail.html" class="product">
-    <img src="bottom3.png" alt="상품3">
-    <h3>수피마 세미와이드 쭈리 팬츠</h3>
-    <p>트레이닝 팬츠지만 수피마 고급 면소재로 제작해 퀄리티를 높였어요</p>
-    <p>₩22,000</p>
-  </a>
-</section>
+   <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 MYCLOSET. All rights reserved.</p>
+  </footer>
 
+
+  
+  <!-- Tawk.to 실시간 채팅 스크립트 -->
+  <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/6835a2a21a9645190cc36fa2/1is8o6iuq';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
 
 </body>
 </html>
