@@ -2,46 +2,65 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>MYSHOP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MYCLOSET</title>
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-
-  <!-- 헤더 -->
-  <header>
-    <h1 class="header-title">MYSHOP</h1>
-    <div class="auth-links">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-right">
       <a href="#">회원가입</a>
+      <span>|</span>
       <a href="#">로그인</a>
+      <span>|</span>
+      <a href="#">장바구니</a>
     </div>
-  </header>
-
-  <!-- 네비게이션 -->
-  <nav>
-    <a href="#">홈</a>
-    <a href="products.html">상품</a>
-    <a href="#">베스트</a>
-    <a href="#">장바구니</a>
-  </nav>
-
-  <!-- 배너 이미지 영역 -->
-  <div class="banner">
-    <img src="main.png" alt="메인 배너 이미지">
   </div>
 
-    <!-- Tawk.to 실시간 채팅 스크립트 -->
-  <!--Start of Tawk.to Script-->
+  <!-- Header -->
+  <header>
+    <div class="logo">MYCLOSET</div>
+    <nav>
+      <ul>
+        <li><a href="#">NEW</a></li>
+        <li><a href="#">BEST</a></li>
+        <li><a href="#">TOP</a></li>
+        <li><a href="products.html">BOTTOM</a></li>
+        <li><a href="#">OUTER</a></li>
+        <li><a href="#">ACCESSORY</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Main Banner -->
+    <section class="banner">
+      <div class="banner-content">
+        <h2>SUMMER COLLECTION</h2>
+        <p>트렌디한 여름 아이템을 합리적인 가격에 만나보세요!</p>
+        <a href="#" class="btn">SHOP NOW</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 MYCLOSET. All rights reserved.</p>
+  </footer>
+
+  <!-- Tawk.to 실시간 채팅 스크립트 -->
   <script type="text/javascript">
-  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-  (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/6835a2a21a9645190cc36fa2/1is8o6iuq';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
-  })();
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/6835a2a21a9645190cc36fa2/1is8o6iuq';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    })();
   </script>
-  <!--End of Tawk.to Script-->
 </body>
 </html>
