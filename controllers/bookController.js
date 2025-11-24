@@ -11,7 +11,7 @@ exports.searchBooks = async (req, res) => {
   
   try {
     const response = await axios.get('https://openapi.naver.com/v1/search/book.json', {
-      params: { query: query, display: 12, sort: 'sim' },
+      params: { query: query, display: 8, sort: 'sim' },
       headers: {
         'X-Naver-Client-Id': NAVER_CLIENT_ID,
         'X-Naver-Client-Secret': NAVER_CLIENT_SECRET
