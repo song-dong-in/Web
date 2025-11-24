@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MYCLOSET</title>
+  <title>MY LIBRARY | 개발자를 위한 서점</title>
+  
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2232/2232688.png">
+
   <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- Top Bar -->
+
   <div class="top-bar">
     <div class="top-right">
       <a href="#">회원가입</a>
@@ -18,39 +22,68 @@
     </div>
   </div>
 
-  <!-- Header -->
   <header>
-    <div class="logo">MYCLOSET</div>
+    <div class="logo">MY LIBRARY</div>
     <nav>
       <ul>
-        <li><a href="#">NEW</a></li>
-        <li><a href="#">BEST</a></li>
-        <li><a href="#">TOP</a></li>
-        <li><a href="products.html">BOTTOM</a></li>
-        <li><a href="#">OUTER</a></li>
-        <li><a href="#">ACCESSORY</a></li>
+        <li><a href="products.html?category=베스트셀러">베스트셀러</a></li>
+        <li><a href="products.html?category=소설">소설</a></li>
+        <li><a href="products.html?category=인문">인문/사회</a></li>
+        <li><a href="products.html?category=IT">IT/과학</a></li>
+        <li><a href="products.html?category=경제">경제/경영</a></li>
+        <li><a href="products.html?category=자기계발">자기계발</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Main Content -->
   <main>
-    <!-- Main Banner -->
     <section class="banner">
       <div class="banner-content">
-        <h2>SUMMER COLLECTION</h2>
-        <p>트렌디한 여름 아이템을 합리적인 가격에 만나보세요!</p>
-        <a href="#" class="btn">SHOP NOW</a>
+        <h2>DAILY READING, DAILY GROWTH</h2>
+        <p>오늘의 지혜를 찾으세요.<br>다양한 분야의 신간 도서가 가득합니다!</p>
+        
+        <a href="products.html" class="btn-banner">서재 둘러보기</a>
       </div>
+    </section>
+
+    <section class="product-list">
+      <h2>화제의 신간 도서</h2>
+      <p style="text-align: center; color: #666; margin-bottom: 20px;">
+        지금 가장 주목받는 책들을 만나보세요.
+      </p>
+
+      <div class="slider-viewport">
+        <div id="slider-track" class="slider-track">
+          </div>
+      </div>
+
+      <p id="loading-message" style="text-align:center; width:100%; color:#888;">
+        <i class="fas fa-spinner fa-spin"></i> 도서 정보를 불러오고 있습니다...
+      </p>
     </section>
   </main>
 
-  <!-- Footer -->
+  <div id="book-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <div class="modal-body">
+        <img id="modal-image" src="" alt="책 표지">
+        <div class="modal-text">
+          <h3 id="modal-title">책 제목</h3>
+          <p id="modal-author" class="meta">저자 | 출판사</p>
+          <p id="modal-price" class="price">₩0</p>
+          <div class="divider"></div>
+          <p id="modal-description">상세 설명...</p>
+          <a id="modal-link" href="#" target="_blank" class="btn-link">네이버 상세페이지 이동</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <p>&copy; 2025 MYCLOSET. All rights reserved.</p>
+    <p>&copy; 2025 MY LIBRARY (SONG DONG IN). All rights reserved.</p>
   </footer>
 
-  <!-- Tawk.to 실시간 채팅 스크립트 -->
   <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
@@ -61,6 +94,123 @@
       s1.setAttribute('crossorigin','*');
       s0.parentNode.insertBefore(s1,s0);
     })();
+  </script>
+
+  <script>
+    let currentBooks = [];
+    let slideInterval;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 메인 화면은 항상 '신간 도서'로 고정 노출
+      fetchBooks('신간 도서');
+    });
+
+    // 검색 관련 함수들(handleSearch) 삭제됨
+
+    function fetchBooks(query) {
+      const track = document.getElementById('slider-track');
+      const loadingMsg = document.getElementById('loading-message');
+
+      clearInterval(slideInterval);
+      track.style.transform = 'translateX(0px)';
+      track.innerHTML = '';
+      
+      if (loadingMsg) loadingMsg.style.display = 'block';
+
+      fetch(`/api/search/naver-books?query=${query}`)
+        .then(res => {
+          if (!res.ok) throw new Error('서버 응답 실패');
+          return res.json();
+        })
+        .then(data => {
+          if (loadingMsg) loadingMsg.style.display = 'none';
+
+          const books = data.items;
+          currentBooks = books;
+
+          if (!books || books.length === 0) {
+            track.innerHTML = '<p style="padding:20px; text-align:center;">도서 데이터가 없습니다.</p>';
+            return;
+          }
+
+          books.forEach((book, index) => {
+            const bookCard = document.createElement('div');
+            bookCard.className = 'product-card';
+
+            const cleanTitle = book.title.replace(/<[^>]*>/g, "");
+            const formattedPrice = parseInt(book.price).toLocaleString();
+
+            bookCard.innerHTML = `
+              <div class="img-wrapper">
+                <img src="${book.image}" alt="${cleanTitle}" class="product-image">
+              </div>
+              <h3 class="product-title">${cleanTitle}</h3>
+              <p class="product-price">₩${formattedPrice}</p>
+              <button class="btn-cart" onclick="openModal(${index})">상세보기</button>
+            `;
+            track.appendChild(bookCard);
+          });
+
+          startSlider(track, books.length);
+        })
+        .catch(err => {
+          console.error(err);
+          if (loadingMsg) loadingMsg.innerHTML = '<span style="color:red;">서버 연결 확인 필요</span>';
+        });
+    }
+
+    function startSlider(track, totalItems) {
+      let currentIndex = 0;
+      const cardWidth = 300; 
+      const visibleItems = 4;
+
+      slideInterval = setInterval(() => {
+        currentIndex++;
+        if (currentIndex > totalItems - visibleItems) {
+          currentIndex = 0;
+        }
+        const newPosition = -(currentIndex * cardWidth);
+        track.style.transform = `translateX(${newPosition}px)`;
+      }, 3000);
+
+      track.addEventListener('mouseenter', () => clearInterval(slideInterval));
+      track.addEventListener('mouseleave', () => {
+        slideInterval = setInterval(() => {
+          currentIndex++;
+          if (currentIndex > totalItems - visibleItems) currentIndex = 0;
+          track.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+        }, 3000);
+      });
+    }
+
+    // 모달 관련 함수 유지
+    function openModal(index) {
+      const book = currentBooks[index];
+      if (!book) return;
+
+      const cleanTitle = book.title.replace(/<[^>]*>/g, "");
+      const cleanDesc = book.description ? book.description.replace(/<[^>]*>/g, "") : "상세 설명이 없습니다.";
+
+      document.getElementById('modal-image').src = book.image;
+      document.getElementById('modal-title').innerText = cleanTitle;
+      document.getElementById('modal-author').innerText = `${book.author} | ${book.publisher}`;
+      document.getElementById('modal-price').innerText = `₩${parseInt(book.price).toLocaleString()}`;
+      document.getElementById('modal-description').innerText = cleanDesc;
+      document.getElementById('modal-link').href = book.link;
+
+      document.getElementById('book-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('book-modal').classList.add('hidden');
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('book-modal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
   </script>
 </body>
 </html>
