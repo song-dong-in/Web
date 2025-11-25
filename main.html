@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MY LIBRARY | 개발자를 위한 서점</title>
-  
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2232/2232688.png">
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,8 +11,8 @@
 <body>
 
   <div class="top-bar">
-    <div class="top-right">
-      <a href="#">회원가입</a><span>|</span><a href="#">로그인</a><span>|</span><a href="#">장바구니</a>
+    <div class="top-right" id="auth-section">
+      <a href="signup.html">회원가입</a><span>|</span><a href="login.html">로그인</a><span>|</span><a href="#">장바구니</a>
     </div>
   </div>
 
@@ -88,15 +87,53 @@
     let slideInterval;
 
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. 로그인 상태 체크 함수 실행
+      checkLoginStatus();
+
+      // 2. 책 데이터 불러오기
       fetchBooks('신간 도서');
       
-      // 헤더 검색창 엔터키 이벤트
+      // 3. 헤더 검색창 엔터키 이벤트
       document.getElementById('header-search-input').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') headerSearch();
       });
     });
 
-    // 헤더 검색 함수
+    // [추가됨] 로그인 상태 체크 및 상단 바 변경 함수
+    function checkLoginStatus() {
+      // 로컬 스토리지에서 저장된 사용자 이름 가져오기
+      const userName = localStorage.getItem('user_name');
+      const authSection = document.getElementById('auth-section');
+
+      if (userName) {
+        // 로그인 된 경우: 이름과 로그아웃 버튼 표시
+        authSection.innerHTML = `
+          <span style="font-weight:bold; margin-right:10px;">${userName}님 환영합니다</span>
+          <span>|</span>
+          <a href="#" onclick="logout()">로그아웃</a>
+          <span>|</span>
+          <a href="#">장바구니</a>
+        `;
+      } else {
+        // 로그인 안 된 경우: 기존 회원가입/로그인 버튼 표시
+        authSection.innerHTML = `
+          <a href="signup.html">회원가입</a>
+          <span>|</span>
+          <a href="login.html">로그인</a>
+          <span>|</span>
+          <a href="#">장바구니</a>
+        `;
+      }
+    }
+
+    // [추가됨] 로그아웃 함수
+    function logout() {
+      localStorage.removeItem('user_name'); // 저장된 이름 삭제
+      alert('로그아웃 되었습니다.');
+      location.reload(); // 페이지 새로고침
+    }
+
+    // --- 기존 함수들 유지 ---
     function headerSearch() {
       const keyword = document.getElementById('header-search-input').value;
       if (!keyword.trim()) {
@@ -116,7 +153,6 @@
       
       if (loadingMsg) loadingMsg.style.display = 'block';
 
-      // 메인 슬라이더는 12개 정도만 가져오면 충분
       fetch(`/api/search/naver-books?query=${query}&display=12`)
         .then(res => res.json())
         .then(data => {
@@ -134,8 +170,6 @@
             bookCard.className = 'product-card';
 
             const cleanTitle = book.title.replace(/<[^>]*>/g, "");
-
-            // 가격 예외 처리 (NaN 방지)
             let rawPrice = book.discount ? book.discount : book.price;
             let parsedPrice = parseInt(rawPrice);
             let displayPrice;
@@ -192,7 +226,6 @@
       document.getElementById('modal-title').innerText = book.title.replace(/<[^>]*>/g, "");
       document.getElementById('modal-author').innerText = `${book.author} | ${book.publisher}`;
       
-      // 모달 가격 표시 안전장치
       let rawPrice = book.discount ? book.discount : book.price;
       let parsedPrice = parseInt(rawPrice);
       document.getElementById('modal-price').innerText = (isNaN(parsedPrice) || parsedPrice === 0) ? '가격 정보 없음' : `₩${parsedPrice.toLocaleString()}`;
