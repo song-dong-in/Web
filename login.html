@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 | MY LIBRARY</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+    h2 { margin-top: 0; color: #2c3e50; }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    button:hover { background-color: #1a252f; }
+    .link { margin-top: 15px; font-size: 13px; }
+    .link a { color: #2c3e50; text-decoration: none; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>로그인</h2>
+    <input type="text" id="l_id" placeholder="아이디">
+    <input type="password" id="l_pw" placeholder="비밀번호">
+    <button onclick="login()">로그인</button>
+
+    <div class="link">
+      계정이 없으신가요? <a href="signup.html">회원가입 하러가기</a>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('l_id').value;
+      const password = document.getElementById('l_pw').value;
+
+      if(!username || !password) {
+        alert("아이디와 비밀번호를 입력해주세요.");
+        return;
+      }
+
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.success) {
+          // [추가] 로그인 성공 시 이름을 저장합니다!
+          localStorage.setItem('user_name', data.name);
+          alert(data.message);
+          location.href = 'main.html'; // 로그인 성공 시 메인으로 이동
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>
