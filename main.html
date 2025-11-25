@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MY LIBRARY | 개발자를 위한 서점</title>
+  
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2232/2232688.png">
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -19,12 +20,6 @@
   <header>
     <div class="logo">MY LIBRARY</div>
 
-    <div class="header-search">
-      <input type="text" id="header-search-input" placeholder="도서 검색...">
-      <button onclick="headerSearch()" class="header-search-btn">
-        <i class="fas fa-search"></i>
-      </button>
-    </div>
     <nav>
       <ul>
         <li><a href="products.html?query=베스트셀러">베스트셀러</a></li>
@@ -35,6 +30,13 @@
         <li><a href="products.html?query=자기계발">자기계발</a></li>
       </ul>
     </nav>
+
+    <div class="header-search">
+      <input type="text" id="header-search-input" placeholder="도서 검색...">
+      <button onclick="headerSearch()" class="header-search-btn">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
   </header>
 
   <main>
@@ -88,13 +90,13 @@
     document.addEventListener('DOMContentLoaded', () => {
       fetchBooks('신간 도서');
       
-      // [추가] 헤더 검색창 엔터키
+      // 헤더 검색창 엔터키 이벤트
       document.getElementById('header-search-input').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') headerSearch();
       });
     });
 
-    // [추가] 헤더 검색 함수
+    // 헤더 검색 함수
     function headerSearch() {
       const keyword = document.getElementById('header-search-input').value;
       if (!keyword.trim()) {
@@ -132,14 +134,24 @@
             bookCard.className = 'product-card';
 
             const cleanTitle = book.title.replace(/<[^>]*>/g, "");
-            const formattedPrice = parseInt(book.price).toLocaleString();
+
+            // 가격 예외 처리 (NaN 방지)
+            let rawPrice = book.discount ? book.discount : book.price;
+            let parsedPrice = parseInt(rawPrice);
+            let displayPrice;
+            
+            if (isNaN(parsedPrice) || parsedPrice === 0) {
+              displayPrice = '<span style="color:#999; font-size:14px;">가격 정보 없음</span>';
+            } else {
+              displayPrice = `₩${parsedPrice.toLocaleString()}`;
+            }
 
             bookCard.innerHTML = `
               <div class="img-wrapper">
                 <img src="${book.image}" alt="${cleanTitle}" class="product-image">
               </div>
               <h3 class="product-title">${cleanTitle}</h3>
-              <p class="product-price">₩${formattedPrice}</p>
+              <p class="product-price">${displayPrice}</p>
               <button class="btn-cart" onclick="openModal(${index})">상세보기</button>
             `;
             track.appendChild(bookCard);
@@ -179,7 +191,12 @@
       document.getElementById('modal-image').src = book.image;
       document.getElementById('modal-title').innerText = book.title.replace(/<[^>]*>/g, "");
       document.getElementById('modal-author').innerText = `${book.author} | ${book.publisher}`;
-      document.getElementById('modal-price').innerText = `₩${parseInt(book.price).toLocaleString()}`;
+      
+      // 모달 가격 표시 안전장치
+      let rawPrice = book.discount ? book.discount : book.price;
+      let parsedPrice = parseInt(rawPrice);
+      document.getElementById('modal-price').innerText = (isNaN(parsedPrice) || parsedPrice === 0) ? '가격 정보 없음' : `₩${parsedPrice.toLocaleString()}`;
+
       document.getElementById('modal-description').innerText = book.description ? book.description.replace(/<[^>]*>/g, "") : "내용 없음";
       document.getElementById('modal-link').href = book.link;
       document.getElementById('book-modal').classList.remove('hidden');
