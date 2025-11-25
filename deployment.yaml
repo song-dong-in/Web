@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-web-app-deployment
+spec:
+  replicas: 1 # 컨테이너를 1개 실행합니다.
+  selector:
+    matchLabels:
+      app: my-web-app
+  template:
+    metadata:
+      labels:
+        app: my-web-app
+    spec:
+      containers:
+      - name: my-web-app-container
+        # ▼▼▼ 여기를 본인의 이미지 주소로 수정하세요! ▼▼▼
+        image: songdongin/my-web-app:latest
+        ports:
+        - containerPort: 3000 # 컨테이너 내부 포트
+        envFrom: # 아까 만든 Secret에서 환경 변수를 가져옵니다.
+        - secretRef:
+            name: my-app-secrets
