@@ -1,0 +1,17 @@
+# git 관련 파일 제외
+.git
+.gitignore
+
+# 로컬 의존성 폴더 제외 (도커 안에서 다시 설치해야 함)
+node_modules
+
+# ==== [핵심] 비밀 정보 파일 제외 ====
+.env
+config.js
+secrets.json
+# ==================================
+
+# 기타 불필요한 파일
+README.md
+Dockerfile
+.dockerignore
