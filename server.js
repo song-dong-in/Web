@@ -150,7 +150,7 @@
   // 5. 서버 시작
   // ====================================================
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'main.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
   });
 
   app.listen(PORT, () => {
