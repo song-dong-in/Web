@@ -79,7 +79,7 @@
           // [추가] 로그인 성공 시 이름을 저장합니다!
           localStorage.setItem('user_name', data.name);
           alert(data.message);
-          location.href = 'main.html'; // 로그인 성공 시 메인으로 이동
+          location.href = '/'; // 로그인 성공 시 메인으로 이동
         } else {
           alert(data.message);
         }
