@@ -31,7 +31,10 @@
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-    ssl: { rejectUnauthorized: false } 
+    ssl: {
+    rejectUnauthorized: true,
+    minVersion: 'TLSv1.2'
+  }
   });
 
   db.getConnection((err, connection) => {
