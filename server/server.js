@@ -17,13 +17,23 @@ const PORT = process.env.PORT || 3000;
 // 1. 미들웨어 설정
 // ====================================================
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173' , 'https://web-1-5hmz.onrender.com'], 
+    // [수정] 로컬 주소와 배포된 Render 주소를 모두 허용합니다.
+    origin: [
+        'http://localhost:3000', 
+        'http://localhost:5173', 
+        'https://web-1-5hmz.onrender.com' 
+    ], 
     credentials: true, 
 }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname))); 
+
+// [수정] 백엔드 서버가 프론트엔드 빌드 결과물(client/dist)을 정적 파일로 제공하도록 설정
+// __dirname은 server 폴더를 가리키므로, 상위 폴더(..)의 client/dist로 접근합니다.
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+
 
 // ====================================================
 // 2-1. MySQL (TiDB) 데이터베이스 연결 설정
@@ -334,9 +344,9 @@ app.delete('/api/review/delete', async (req, res) => {
 // ====================================================
 // 5. 서버 시작
 // ====================================================
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'index.html'));
+// });
 
 app.listen(PORT, () => {
     console.log(`🚀 서버 실행 중 (http://localhost:${PORT})`);
