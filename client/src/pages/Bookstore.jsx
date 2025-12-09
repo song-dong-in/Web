@@ -42,8 +42,8 @@ function Bookstore() {
     stopSlider();
     setSlideIndex(0);
     try {
-      const response = await fetch(`/api/search/naver-books?query=${query}&display=12`);
-      const data = await response.json();
+      const response = await fetch(`https://web-0awd.onrender.com/api/search/naver-books?query=${query}&display=12`);
+      const data = await response.json();
       if (data.items) {
         setBooks(data.items);
         startSlider(data.items.length);
