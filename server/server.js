@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 // 1. 미들웨어 설정
 // ====================================================
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'], 
+    origin: ['http://localhost:3000', 'http://localhost:5173' , 'https://web-1-5hmz.onrender.com'], 
     credentials: true, 
 }));
 

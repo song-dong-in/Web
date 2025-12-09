@@ -6,18 +6,18 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    // [핵심] 3000번 포트의 백엔드 서비스 이름으로 요청을 보냅니다.
+    // [핵심 수정] 로컬 환경의 백엔드 주소로 변경합니다.
     proxy: {
       '/api': {
-        // Minikube 환경에서는 쿠버네티스 서비스 이름으로 접근해야 합니다.
-        target: 'http://bookstore-back-service:3000', 
+        // 백엔드 서버가 로컬에서 실행되는 주소 (port 3000)
+        target: 'http://localhost:3000', 
         changeOrigin: true,
-        // 프론트엔드에서 /api 경로를 요청하면, 백엔드로 전달됩니다.
+        // rewrite는 경로 조작이 필요 없을 경우 간단하게 처리합니다.
         rewrite: (path) => path.replace(/^\/api/, '/api'), 
       },
     },
-    // 컨테이너 내부에서 접근 가능하도록 호스트를 설정합니다.
-    host: '0.0.0.0',
+    // 로컬 개발 환경에서는 'localhost'를 사용해도 무방합니다.
+    host: 'localhost', 
     port: 5173,
   },
 });
