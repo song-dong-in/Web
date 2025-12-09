@@ -1,0 +1,7 @@
+/* App.css에 이런게 있다면 삭제하거나 주석 처리하세요 */
+#root {
+  max-width: 1280px; /* 👈 범인! 화면 폭을 제한함 */
+  margin: 0 auto;    /* 👈 범인! 가운데 정렬시킴 */
+  padding: 2rem;     /* 👈 범인! 안쪽 여백을 줌 */
+  text-align: center;
+}

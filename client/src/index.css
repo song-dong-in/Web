@@ -1,0 +1,32 @@
+/* =========================================
+   [중요] 전역 초기화 스타일
+   - 화면 꽉 채우기 위해 margin, padding을 0으로 설정
+========================================= */
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* body와 html, #root가 화면 전체를 쓰도록 강제 */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+/* 기존에 body에 있던 padding이나 flex 설정이 있다면 반드시 지워야 합니다! */
+body {
+  background-color: #f9fafc; /* 배경색 */
+  /* display: flex;  <-- 이거 지움 */
+  /* place-items: center; <-- 이거 지움 */
+  /* min-width: 320px; <-- 이거 지움 */
+}
+
+/* 모든 요소의 박스 크기 계산 방식 통일 */
+*, *::before, *::after {
+  box-sizing: border-box;
+}

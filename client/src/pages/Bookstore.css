@@ -1,0 +1,296 @@
+/* =========================================
+   1. 전체 레이아웃 (화면 꽉 채우기 - 강력 초기화)
+========================================= */
+/* 브라우저 기본 여백 강력 제거 */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #fff;
+    color: #333;
+}
+
+/* 전체 래퍼 */
+.bookstore-wrapper {
+    display: flex; flex-direction: column; min-height: 100vh;
+    width: 100%;
+    max-width: none !important;
+    margin: 0;
+    padding: 0;
+}
+
+.top-bar, header, main, footer { width: 100%; box-sizing: border-box; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* =========================================
+   2. 상단 바 & 헤더 스타일
+========================================= */
+.top-bar {
+    background-color: #222; color: #eee; padding: 10px 40px;
+    display: flex; justify-content: flex-end; font-size: 0.8rem;
+}
+.top-right a, .top-right span { margin-left: 15px; color: #eee; }
+.top-right a:hover { color: #fff; text-decoration: underline; }
+.top-btn {
+    background: none; border: none; color: #eee; cursor: pointer; padding: 0; margin-left: 15px; font-size: 0.8rem;
+}
+.top-btn:hover { color: #fff; text-decoration: underline; }
+
+header {
+    background-color: #fff; padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #eee;
+}
+.logo { font-size: 1.8rem; font-weight: 800; color: #1a237e; letter-spacing: -0.5px; }
+header nav ul { 
+    display: flex; gap: 30px; margin-right: 50px;
+}
+header nav a { 
+    font-weight: 600; font-size: 1rem; color: #444; transition: color 0.2s; 
+}
+header nav a:hover { color: #1a237e; }
+
+.header-search {
+    display: flex; align-items: center; background-color: #f7f7f7;
+    border-radius: 50px; padding: 8px 20px; width: 300px;
+    border: 1px solid transparent;
+}
+.header-search:focus-within {
+    background-color: #fff; border-color: #ddd;
+}
+.header-search input {
+    flex: 1; border: none; outline: none; background: transparent !important;
+    padding: 5px; font-size: 0.95rem; color: #333;
+}
+.header-search-btn {
+    background: none; border: none; cursor: pointer; color: #888; font-size: 1.1rem;
+}
+
+/* =========================================
+   3. 메인 콘텐츠 (배너 꽉 채우기 & 텍스트 크기 조절)
+========================================= */
+main {
+    flex: 1; display: flex; flex-direction: column; align-items: center; width: 100%;
+    padding: 0 !important; /* 패딩 제거 강제 */
+    margin-top: 0 !important;  /* 상단 마진 제거 강제 */
+}
+
+/* 배너가 화면 전체를 덮도록 설정 */
+.banner {
+    width: 100%; 
+    height: 500px; 
+    background-color: #999;
+    background-size: cover; background-position: center;
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 60px;
+}
+
+/* 이미지 위에 어두운 오버레이 */
+.banner::before {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+/* 배너 내부 텍스트 크기 */
+.banner-content {
+    position: relative; z-index: 2;
+    text-align: center; color: #ffffff !important;
+    max-width: 800px;
+    padding: 0 20px;
+}
+.banner-content h2 {
+    font-size: 2.5rem;
+    font-weight: 800; margin-bottom: 20px; 
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+.banner-content p {
+    font-size: 1.1rem;
+    margin-bottom: 40px; line-height: 1.6; opacity: 1;
+    color: #ffffff !important;
+    text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+}
+.btn-banner {
+    display: inline-block; background-color: #1a237e; color: white;
+    padding: 15px 40px; border-radius: 30px; font-weight: 700; font-size: 1rem;
+    transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.btn-banner:hover {
+    background-color: #283593; transform: translateY(-3px);
+}
+
+/* 상품 리스트 섹션 */
+.product-list {
+    width: 100%; max-width: 1200px; padding: 0 20px 60px 20px; text-align: center; margin: 0 auto;
+}
+.product-list h2 {
+    font-size: 2rem; font-weight: 700; color: #222; margin-bottom: 10px;
+}
+.product-list p { color: #666; margin-bottom: 40px; }
+.loading-msg, .no-data-msg { text-align: center; padding: 50px 0; color: #888; }
+
+/* 슬라이더 & 카드 */
+.slider-viewport { width: 100%; overflow: hidden; padding: 20px 0; }
+.slider-track { display: flex; transition: transform 0.5s ease-in-out; gap: 25px; }
+.product-card {
+    flex: 0 0 260px; background: white; border-radius: 12px;
+    border: 1px solid #eee; padding: 20px; text-align: center;
+    box-sizing: border-box; transition: transform 0.3s, box-shadow 0.3s;
+    display: flex; flex-direction: column; justify-content: space-between;
+}
+.product-card:hover {
+    transform: translateY(-7px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: transparent;
+}
+.img-wrapper {
+    height: 200px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px; overflow: hidden; background-color: #fcfcfc; border-radius: 8px; padding: 10px;
+}
+.product-image {
+    width: auto; height: 100%; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+}
+.product-title {
+    font-size: 1.05rem; color: #333; font-weight: 700; margin-bottom: 5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.product-price { font-size: 1.1rem; color: #1a237e; font-weight: 800; margin-bottom: 15px; }
+.btn-cart {
+    width: 100%; padding: 12px 0; background-color: #222; color: white;
+    border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: background 0.2s;
+}
+.btn-cart:hover { background-color: #444; }
+
+/* =========================================
+   4. 푸터
+========================================= */
+footer {
+    text-align: center; padding: 40px 0; background-color: #f9f9f9; 
+    color: #888; border-top: 1px solid #eee; font-size: 0.9rem;
+}
+
+/* =========================================
+   5. 모달 스타일 (깔끔한 상하 배치 + 이미지 크기 고정)
+========================================= */
+/* =========================================
+   5. 모달 스타일 (이미지 크기 강제 고정 - Products와 통일)
+========================================= */
+.modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7); 
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+.modal-content {
+    background-color: white; padding: 50px; border-radius: 16px;
+    width: 90%; max-width: 1000px; position: relative;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3); overflow: hidden; max-height: 90vh;
+    display: flex; flex-direction: column;
+}
+.close-btn {
+    position: absolute; top: 20px; right: 25px; font-size: 2.2rem; 
+    cursor: pointer; color: #ccc; z-index: 10; transition: color 0.2s;
+}
+.close-btn:hover { color: #333; }
+.modal-body-container { overflow-y: auto; padding-right: 10px; }
+
+/* 왼쪽: 책 정보 */
+.modal-book-detail {
+    display: flex; gap: 50px; margin-bottom: 50px; border-bottom: 1px solid #f1f3f5; padding-bottom: 40px;
+    align-items: flex-start;
+}
+
+/* [핵심 수정] 이미지 틀: 무조건 동일한 크기의 '흰색 카드'로 만듦 */
+.modal-image-wrapper {
+    /* 1. 크기 강제 고정 (이 크기로 무조건 통일됨) */
+    width: 230px !important;  
+    height: 330px !important; 
+    
+    flex-shrink: 0 !important; /* 찌그러짐 방지 */
+    
+    /* 2. 카드 디자인 적용 (테두리와 그림자를 '틀'에 줌) */
+    background-color: #fff !important; /* 배경을 흰색으로 */
+    border: 1px solid #eee !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+    
+    /* 3. 내부 이미지 중앙 정렬 */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 15px !important; /* 이미지와 테두리 사이 여백 */
+    
+    margin: 0 auto; /* 모바일 등에서 중앙 정렬 */
+}
+
+/* [핵심 수정] 이미지: 비율 유지하며 틀 안에 꽉 차게 */
+#modal-image {
+    /* 부모(틀)의 크기를 넘지 않도록 설정 */
+    max-width: 100% !important;
+    max-height: 100% !important;
+    
+    width: auto !important; 
+    height: auto !important; 
+    
+    /* 비율 유지하며 틀 안에 쏙 들어가게 함 (잘리지 않음) */
+    object-fit: contain !important; 
+    
+    /* 이미지 자체에는 그림자 제거 (틀에 그림자가 있으므로) */
+    box-shadow: none !important; 
+    border-radius: 4px;
+}
+
+.modal-text { flex: 1; display: flex; flex-direction: column; text-align: left; }
+#modal-title {
+    font-size: 2rem; margin: 0 0 10px 0; color: #222; line-height: 1.3; font-weight: 800;
+}
+.meta { color: #888; font-size: 1rem; margin-bottom: 25px; }
+.price { font-size: 1.8rem; color: #d32f2f; font-weight: 800; margin-bottom: 25px; }
+#modal-description {
+    font-size: 1rem; line-height: 1.7; color: #555;
+    background-color: #fcfcfc; padding: 20px; border-radius: 8px;
+    max-height: 150px; overflow-y: auto; margin-bottom: auto;
+}
+.btn-add-cart {
+    width: 100%; padding: 18px; background-color: #222; color: white;
+    border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 700;
+    margin-top: 30px; cursor: pointer; transition: background 0.2s;
+}
+.btn-add-cart:hover { background-color: #444; }
+
+/* 오른쪽: 댓글 섹션 */
+.modal-comment-section { background-color: #f9f9f9; padding: 30px; border-radius: 12px; }
+.modal-comment-section h4 { margin: 0 0 15px 0; font-size: 1.3rem; color: #333; font-weight: 700; }
+.modal-comment-section textarea {
+    width: 100%; height: 100px; padding: 15px; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 0.95rem; resize: none; background-color: white;
+}
+.modal-comment-section textarea:focus { outline: none; border-color: #333; }
+.btn-comment-submit {
+    float: right; margin-top: 15px; padding: 10px 30px;
+    background-color: #555; color: white; border: none; border-radius: 6px;
+    font-weight: 600; cursor: pointer;
+}
+.btn-comment-submit:hover { background-color: #333; }
+.comment-list-placeholder { clear: both; padding-top: 40px; text-align: center; color: #999; }
+
+@media (max-width: 900px) {
+    .modal-content { padding: 30px; width: 95%; }
+    .modal-book-detail { flex-direction: column; align-items: center; gap: 30px; text-align: center; }
+    /* 모바일에서도 이미지 크기 고정 유지 */
+    .modal-image-wrapper { width: 180px !important; height: 260px !important; } 
+    .modal-text { text-align: center; width: 100%; }
+    #modal-description { text-align: left; }
+    .btn-comment-submit { width: 100%; margin-top: 10px; float: none; }
+    header { flex-direction: column; gap: 15px; padding: 20px; }
+    header nav ul { margin-right: 0; justify-content: center; width: 100%; }
+    .header-search { width: 100%; }
+    .banner-content h2 { font-size: 2.2rem; } 
+}

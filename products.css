@@ -1,4 +1,19 @@
-body {
+/* =========================================
+   0. 전역 초기화
+========================================= */
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================
+   1. 전체 레이아웃
+========================================= */
+.products-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
   font-family: 'Noto Sans KR', Arial, sans-serif;
   background-color: #fafafa;
   color: #333;
@@ -6,149 +21,195 @@ body {
   padding: 0;
 }
 
+/* 상단바, 헤더, 메인, 푸터 공통 */
+.top-bar, header, main, footer {
+  width: 100%;
+}
+
 .top-bar {
   background-color: #222;
   color: white;
-  font-size: 13px;
+  padding: 8px 50px;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  padding: 8px 50px;
+  font-size: 13px;
 }
-
-.top-bar .top-right a {
+.top-right a {
   color: white;
   text-decoration: none;
   margin-left: 10px;
 }
 
-.top-bar .top-right a:hover {
-  text-decoration: underline;
-}
-
 header {
+  background-color: #fff;
+  padding: 20px 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 50px;
-  background-color: #fff;
   border-bottom: 1px solid #ddd;
 }
+.logo { font-size: 28px; font-weight: bold; color: #222; }
 
-.logo {
-  font-size: 28px;
-  font-weight: bold;
-  color: #222;
+nav ul { list-style: none; padding: 0; margin: 0; display: flex; gap: 20px; }
+nav ul li a { text-decoration: none; color: #555; font-weight: 500; transition: color 0.2s; }
+nav ul li a:hover { color: #000; font-weight: bold; }
+
+/* 검색창 스타일 */
+.header-search {
+  display: flex; align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 25px;
+  padding: 5px 15px;
+  width: 300px;
+  border: 1px solid #ddd;
+}
+.header-search input {
+  flex-grow: 1; border: none; outline: none; background: transparent;
+  padding: 8px 5px; font-size: 1rem; color: #333;
+}
+.header-search-btn {
+  background: none; border: none; padding: 5px; cursor: pointer; color: #888;
+  display: flex; align-items: center; justify-content: center;
 }
 
-nav ul {
+/* =========================================
+   2. Products 페이지 메인 스타일 (핵심 변경)
+========================================= */
+main {
+  flex: 1;
   display: flex;
-  list-style: none;
-  gap: 20px;
-  padding: 0;
-  margin: 0;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 50px;
 }
 
-nav a {
-  text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-nav a:hover,
-nav a.active {
-  color: #000;
-  font-weight: bold;
-  border-bottom: 2px solid #000;
-}
-
-.product-list {
+.product-list-section {
   max-width: 1200px;
+  width: 100%;
   margin: 40px auto;
   padding: 0 20px;
   text-align: center;
 }
 
-.product-list h2 {
+#category-title {
   font-size: 32px;
   margin-bottom: 10px;
+  color: #222;
 }
-
-.section-desc {
+.subtitle {
   font-size: 16px;
   color: #777;
   margin-bottom: 30px;
 }
 
-.products {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  padding: 30px 10px;
+/* [수정] 상품 그리드 (3열 배치로 깔끔하게) */
+.product-grid {
+  display: grid;
+  /* 3열로 고정하고, 카드의 최소 너비를 250px로 설정하여 반응형 대응 */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  gap: 30px; /* 간격 확장 */
+  padding: 40px; 
   background-color: #f2f2f2;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05); /* 박스 그림자 추가 */
 }
 
-.product-item {
-  display: block;  /* 링크 스타일이 인라인이라서 block으로 바꿔줌 */
+/* [수정] 카드 스타일 - 높이 통일 보장 */
+.product-card {
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
-  width: 200px;
+  border-radius: 10px; /* 모서리 부드럽게 */
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05); /* 그림자 살짝 강조 */
   transition: transform 0.2s;
-  text-decoration: none;  /* 링크 밑줄 제거 */
-  color: inherit;  /* 링크 색상 기본으로 상속 */
+  
+  height: 100%; /* 그리드 셀 높이 꽉 채우기 (울퉁불퉁함 방지) */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.product-item:hover {
-  transform: scale(1.03);
+.product-card:hover {
+  transform: translateY(-4px); 
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-.product-item img {
+.img-wrapper {
   width: 100%;
-  height: 250px;
-  border-radius: 5px;
+  height: 250px; 
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.product-image { 
+  max-width: 100%; 
+  max-height: 100%; 
+  object-fit: contain; 
 }
 
+.product-title {
+  font-size: 1.1rem;
+  margin: 10px 0 5px 0; /* 제목 아래쪽 마진 줄임 */
+  color: #333;
+  font-weight: bold;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 
+.product-price { 
+  color: #1a237e; 
+  font-weight: bold; 
+  margin-bottom: 15px; 
+  font-size: 1.2rem; /* 가격 강조 */
+}
 
-.product-item .btn {
-  display: inline-block;
-  padding: 8px 20px;
+/* 버튼 */
+.btn-cart {
+  display: block;
+  width: 100%;
+  padding: 10px 0; /* 패딩 늘려 클릭 영역 확보 */
   background-color: #333;
   color: white;
   border-radius: 5px;
-  margin-top: 10px;
+  border: none;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 1rem;
 }
-
-.product-item .btn:hover {
+.btn-cart:hover {
   background-color: #555;
 }
 
-.product-item a {
-  text-decoration: none;
-  color: inherit;
-  display: block;  /* 이미지와 h3 둘 다 감싸게 */
-}
 
-
-
-footer {
-  background-color: #222;
-  color: #fff;
-  text-align: center;
-  padding: 20px 0;
+/* =========================================
+   3. 페이지네이션 & 기타
+========================================= */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
   margin-top: 50px;
 }
-
-
-.logo-link {
-  text-decoration: none;  /* 밑줄 제거 */
-  color: inherit;         /* 글자색 상속 */
+.page-btn {
+  padding: 10px 16px; /* 버튼 크기 키움 */
+  border: 1px solid #ddd;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
 }
+.page-btn.active { background: #1a237e; color: white; border-color: #1a237e; }
+
+.loading-msg, .no-data-msg {
+  text-align: center; width: 100%; color: #888; margin: 50px 0;
+}
+
+footer { background-color: #222; color: #fff; text-align: center; padding: 20px 0; margin-top: auto; }
+
+/* 모달 스타일은 유지 */
+.modal { position: fixed; /* ... */ }
+/* ... (모달 상세 스타일 생략) */
