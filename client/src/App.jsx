@@ -5,7 +5,8 @@ import Bookstore from './pages/Bookstore';
 import Products from './pages/Products';
 import Cart from './pages/Cart';
 import Login from './pages/Login';   // 👈 추가
-import Signup from './pages/Signup'; // 👈 추가
+import Signup from './pages/Signup'; // 👈 
+
 
 function App() {
   return (
