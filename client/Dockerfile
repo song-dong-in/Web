@@ -1,11 +1,12 @@
-# client/Dockerfile 내용
-FROM node:20-alpine
-
+FROM node:22 as build
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --ignore-scripts # <--- 이 부분에 임의의 주석이나 --ignore-scripts를 추가하여 캐시를 깨트립니다.
-
+RUN npm install
 COPY . .
+RUN npm run build
 
-EXPOSE 5173
-CMD ["npm", "run", "dev", "--", "--host"]
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+RUN echo 'server { listen 80; location / { root /usr/share/nginx/html; index index.html index.htm; try_files $uri $uri/ /index.html; } }' > /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
