@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import * as toxicity from '@tensorflow-models/toxicity'; // [AI] TensorFlow 모델 추가
 import './Products.css'; 
 
 function Products() {
@@ -23,6 +24,10 @@ function Products() {
   const [comment, setComment] = useState(''); 
   const [comments, setComments] = useState([]); // 댓글 목록
 
+  // [AI] 모델 상태 추가
+  const [model, setModel] = useState(null);
+  const [isModelLoading, setIsModelLoading] = useState(true);
+
   const [keyword, setKeyword] = useState('');
   
   const navigate = useNavigate();
@@ -35,13 +40,22 @@ function Products() {
     return `₩${parsed.toLocaleString()}`;
   };
 
-  // 1. 초기 데이터 및 로그인 정보 로드
+  // 1. 초기 데이터, 로그인 정보, [AI] 모델 로드
   useEffect(() => {
     const savedUser = localStorage.getItem('user_name');
     if (savedUser) setUser(savedUser);
 
     fetchBooks(currentQuery, page);
     window.scrollTo(0, 0); 
+    
+    // [AI] TensorFlow Toxicity 모델 로드 (임계값 0.85)
+    const threshold = 0.5;
+    toxicity.load(threshold).then(loadedModel => {
+        setModel(loadedModel);
+        setIsModelLoading(false);
+        console.log("🤖 AI 악성 댓글 감지 모델 로드 완료!");
+    });
+
   }, [currentQuery, page]);
 
   useEffect(() => {
@@ -53,7 +67,6 @@ function Products() {
     const start = (pageNum - 1) * itemsPerPage + 1;
     try {
       const response = await fetch(`https://web-0awd.onrender.com/api/search/naver-books?query=${query}&start=${start}&display=${itemsPerPage}`);
-      //const response = await fetch(`/api/search/naver-books?query=${query}&start=${start}&display=${itemsPerPage}`);
       const data = await response.json();
       if (data.items) {
         setBooks(data.items);
@@ -151,7 +164,7 @@ function Products() {
     closeModal();
   };
 
-  // 댓글 작성
+  // [AI 적용] 댓글 작성 핸들러 수정
   const handleAddComment = async () => {
     const userId = localStorage.getItem('user_id');
     const userName = localStorage.getItem('user_name');
@@ -164,7 +177,51 @@ function Products() {
       alert('댓글 내용을 입력해주세요.');
       return;
     }
+
+
+    // 1. [Rule-Based] 한국어 욕설 필터링 (키워드 방식)
+    const koreanBadWords = ['바보', '멍청이', '개새끼', '지랄', '병신', '씨발']; // 시연용 금지어
+    const isKoreanBad = koreanBadWords.some(word => comment.includes(word));
+
+    if (isKoreanBad) {
+        alert("🚫 [키워드 차단] 바르고 고운 말을 사용해주세요!");
+        setComment('');
+        return;
+    }
+
+    // ============================================
+    // [AI] 악성 댓글 감지 로직 시작
+    // ============================================
+    if (isModelLoading) {
+        alert("AI 모델을 불러오는 중입니다. 잠시만 기다려주세요!");
+        return;
+    }
+
+    if (model) {
+        try {
+            console.log("AI 검사 중...");
+            // 입력된 댓글 내용을 AI 모델로 분류
+            const predictions = await model.classify([comment]);
+            
+            // 유해성 판단: match가 true인 항목이 하나라도 있으면 악성 댓글로 간주
+            // categories: identity_attack, insult, obscene, severe_toxicity, sexual_explicit, threat, toxicity
+            const isToxic = predictions.some(prediction => prediction.results[0].match);
+
+            if (isToxic) {
+                alert("🚫 [AI 차단] 비속어나 공격적인 언어가 감지되었습니다.\n바르고 고운 말을 사용해주세요.");
+                setComment(''); // 입력창 초기화
+                return; // 서버 전송 중단
+            }
+        } catch (error) {
+            console.error("AI 검사 오류:", error);
+            // AI 오류 시에는 일단 통과시키거나 에러 처리를 할 수 있음 (여기선 통과)
+        }
+    }
+    // ============================================
+    // [AI] 악성 댓글 감지 로직 끝
+    // ============================================
     
+    // [기존 코드] 서버로 댓글 전송
     try {
         const response = await fetch('https://web-0awd.onrender.com/api/review/add', {
             method: 'POST',
@@ -190,7 +247,7 @@ function Products() {
     }
   };
 
-  // [추가] 댓글 삭제 핸들러
+  // 댓글 삭제 핸들러
   const handleDeleteComment = async (reviewId) => {
     const userId = localStorage.getItem('user_id');
     if (!userId) return;
@@ -355,9 +412,14 @@ function Products() {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                     ></textarea>
-                    <button onClick={handleAddComment} className="btn-comment-submit">
-                        등록
-                    </button>
+                    
+                    {/* [AI] 버튼 옆에 로딩 상태 표시 (선택사항) */}
+                    <div style={{display:'flex', alignItems:'center', marginTop:'10px'}}>
+                        <button onClick={handleAddComment} className="btn-comment-submit" disabled={isModelLoading}>
+                            {isModelLoading ? "AI 준비중..." : "등록"}
+                        </button>
+                        {isModelLoading && <span style={{fontSize:'12px', color:'#666', marginLeft:'10px'}}>🤖 AI 필터 로딩중..</span>}
+                    </div>
                     
                     <div className="comment-list-area" style={{marginTop: '20px', overflowY: 'auto', maxHeight:'200px'}}>
                         {comments.length === 0 ? (
@@ -374,7 +436,6 @@ function Products() {
                                                 {new Date(review.createdAt).toLocaleDateString()}
                                             </span>
                                             
-                                            {/* [핵심] 내가 쓴 글일 때만 삭제 버튼 표시 */}
                                             {parseInt(review.userId) === parseInt(localStorage.getItem('user_id')) && (
                                                 <button 
                                                     onClick={() => handleDeleteComment(review._id)}
