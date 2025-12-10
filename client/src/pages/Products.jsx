@@ -14,7 +14,7 @@ function Products() {
   const currentQuery = searchParams.get('query') || '전체 도서 목록';
   
   const [page, setPage] = useState(1);
-  const itemsPerPage = 9; 
+  const itemsPerPage = 8; 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
