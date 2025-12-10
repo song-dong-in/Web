@@ -52,7 +52,8 @@ function Products() {
     setLoading(true);
     const start = (pageNum - 1) * itemsPerPage + 1;
     try {
-      const response = await fetch(`/api/search/naver-books?query=${query}&start=${start}&display=${itemsPerPage}`);
+      const response = await fetch(`https://web-0awd.onrender.com/api/search/naver-books?query=${query}&start=${start}&display=${itemsPerPage}`);
+      //const response = await fetch(`/api/search/naver-books?query=${query}&start=${start}&display=${itemsPerPage}`);
       const data = await response.json();
       if (data.items) {
         setBooks(data.items);
