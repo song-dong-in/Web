@@ -12,7 +12,6 @@ jobs:
 
     strategy:
       matrix:
-        # [수정] 최신 로그에 기반하여 22.x 버전으로 설정
         node-version: [22.x] 
 
     steps:
@@ -22,22 +21,27 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+        # [보강] 캐시 사용 설정은 그대로 유지
         cache: 'npm'
         
     # --------------------------------------------------
     # 1. 서버 (Backend) 의존성 설치 및 확인
     # --------------------------------------------------
-    - name: Install Server Dependencies
-      # [필수 수정] npm install을 'server' 폴더 내에서 실행하도록 명시
+    - name: Clean and Install Server Dependencies
+      # working-directory 들여쓰기 확인
       working-directory: ./server 
-      run: npm install
+      # [보강] install 전에 기존 노드 모듈 삭제하여 클린 빌드 보장
+      run: |
+        rm -rf node_modules
+        npm install
 
     # --------------------------------------------------
     # 2. 클라이언트 (Frontend) 의존성 설치 및 빌드
     # --------------------------------------------------
-    - name: Install Client Dependencies and Build
-      # [필수 수정] npm install과 npm run build를 'client' 폴더 내에서 실행하도록 명시
+    - name: Clean, Install Client Dependencies and Build
+      # working-directory 들여쓰기 확인
       working-directory: ./client 
       run: |
+        rm -rf node_modules
         npm install
         npm run build
