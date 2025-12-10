@@ -126,7 +126,7 @@ function Products() {
     }
     if (selectedBook) {
       try {
-        const response = await fetch('/api/cart/add', {
+        const response = await fetch('https://web-0awd.onrender.com/api/cart/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -165,7 +165,7 @@ function Products() {
     }
     
     try {
-        const response = await fetch('/api/review/add', {
+        const response = await fetch('https://web-0awd.onrender.com/api/review/add', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
