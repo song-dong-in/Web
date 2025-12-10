@@ -92,7 +92,7 @@ function Products() {
   // 댓글 목록 불러오기
   const fetchComments = async (isbn) => {
     try {
-      const response = await fetch(`/api/review/${isbn}`);
+      const response = await fetch(`https://web-0awd.onrender.com/api/review/${isbn}`);
       if (response.ok) {
         const data = await response.json();
         setComments(data); 

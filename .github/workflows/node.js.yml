@@ -12,10 +12,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        # [수정] 최신 로그에 기반하여 22.x 버전으로 설정
+        node-version: [22.x] 
 
     steps:
     - uses: actions/checkout@v3
+      
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -23,18 +25,19 @@ jobs:
         cache: 'npm'
         
     # --------------------------------------------------
-    # 1. 서버 (Backend) 의존성 설치 및 테스트
+    # 1. 서버 (Backend) 의존성 설치 및 확인
     # --------------------------------------------------
     - name: Install Server Dependencies
-      run: |
-        cd server
-        npm install
-        
+      # [필수 수정] npm install을 'server' 폴더 내에서 실행하도록 명시
+      working-directory: ./server 
+      run: npm install
+
     # --------------------------------------------------
     # 2. 클라이언트 (Frontend) 의존성 설치 및 빌드
     # --------------------------------------------------
     - name: Install Client Dependencies and Build
+      # [필수 수정] npm install과 npm run build를 'client' 폴더 내에서 실행하도록 명시
+      working-directory: ./client 
       run: |
-        cd client
         npm install
-        npm run build # 이 명령어가 성공해야 CI가 통과됩니다.
+        npm run build
