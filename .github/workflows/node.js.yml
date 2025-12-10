@@ -24,17 +24,18 @@ jobs:
         cache: 'npm'
         
     # --------------------------------------------------
-    # 1. 서버 (Backend) 의존성 설치 및 확인
+    # 1. 서버 (Backend) 의존성 설치 (CD 강제)
     # --------------------------------------------------
     - name: Install Server Dependencies
-      # [최종 수정] working-directory 대신 run 명령어에 경로 직접 명시
-      run: npm install --prefix ./server 
+      # [최종 수정] cd로 폴더 이동 후 npm install 실행
+      run: cd server && npm install
 
     # --------------------------------------------------
-    # 2. 클라이언트 (Frontend) 의존성 설치 및 빌드
+    # 2. 클라이언트 (Frontend) 의존성 설치 및 빌드 (CD 강제)
     # --------------------------------------------------
     - name: Install Client Dependencies and Build
-      # [최종 수정] working-directory 대신 run 명령어에 경로 직접 명시
+      # [최종 수정] cd로 폴더 이동 후 npm install 및 npm run build 실행
       run: |
-        npm install --prefix ./client
-        npm run build --prefix ./client
+        cd client
+        npm install
+        npm run build
