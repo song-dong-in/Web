@@ -25,7 +25,7 @@ function Cart() {
 
   const fetchCartItems = async (uid) => {
     try {
-      const response = await fetch(`/api/cart/${uid}`);
+      const response = await fetch(`https://web-0awd.onrender.com/api/cart/${uid}`);
       const data = await response.json();
       setCartItems(data);
     } catch (error) {
@@ -44,7 +44,7 @@ function Cart() {
     const newQuantity = currentQuantity + delta;
     if (newQuantity < 1) return;
     try {
-        const response = await fetch('/api/cart/update', {
+        const response = await fetch('https://web-0awd.onrender.com/api/cart/update', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, bookIsbn, quantity: newQuantity })
@@ -63,7 +63,7 @@ function Cart() {
   const handleRemove = async (bookIsbn) => {
     if (!window.confirm('선택한 상품을 삭제하시겠습니까?')) return;
     try {
-        const response = await fetch('/api/cart/remove', {
+        const response = await fetch('https://web-0awd.onrender.com/api/cart/remove', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, bookIsbn })

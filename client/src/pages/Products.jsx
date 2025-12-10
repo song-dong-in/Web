@@ -198,7 +198,7 @@ function Products() {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
-        const response = await fetch('/api/review/delete', {
+        const response = await fetch('https://web-0awd.onrender.com/api/review/delete', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ reviewId, userId }) // 삭제할 댓글 ID와 내 ID 전송
