@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // [수정] 백엔드 서버가 프론트엔드 빌드 결과물(client/dist)을 정적 파일로 제공하도록 설정
 // __dirname은 server 폴더를 가리키므로, 상위 폴더(..)의 client/dist로 접근합니다.
-app.use(express.static(path.join(__dirname, '../client/dist')));
+//app.use(express.static(path.join(__dirname, '../client/dist')));
 
 
 
